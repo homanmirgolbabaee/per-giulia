@@ -43,14 +43,20 @@ import googlemaps
 gmaps = googlemaps.Client(key=st.secrets['google_maps_key'])
 # Mock function to simulate fetching bars near a campus location
 def fetch_bars_near_campus(campus_location):
-    # This is where you'd use the Google Maps Places API to fetch bars near the campus
-    # For demonstration, we're returning a mock list of bars
-    mock_bars = [
-        {'name': 'Bar A', 'address': '100 Main St, Padova', 'rating': 4.5},
-        {'name': 'Bar B', 'address': '200 Main St, Padova', 'rating': 4.0},
-        {'name': 'Bar C', 'address': '300 Main St, Padova', 'rating': 4.2},
-    ]
-    return mock_bars
+    # Replace 'campus_location' with actual latitude and longitude
+    # For example: campus_location = {'lat': 45.406435, 'lng': 11.876761} # Example coordinates
+    
+    # Making a request to find bars near the campus location
+    places_result = gmaps.places_nearby(location=campus_location, radius=500, type='bar')
+    
+    bars = []
+    for place in places_result.get('results', []):
+        bars.append({
+            'name': place.get('name'),
+            'address': place.get('vicinity'),
+            'rating': place.get('rating', 'N/A')
+        })
+    return bars
 
 
 
@@ -59,8 +65,12 @@ def show_bar_finder():
     st.header("Bar Finder (Gluten Free Bars)")
     st.write("Detailed information and functionality for finding gluten-free bars.")
     
-    # Example campuses (replace with actual campuses and their locations)
-    campuses = {'Campus A': 'Location A', 'Campus B': 'Location B'}
+    campuses = {
+        'Campus A': {'lat': 45.411889, 'lng': 11.887048}, # DEI Department, University of Padova
+        'Campus B': {'lat': 45.421500, 'lng': 11.886111}, # Psychology Department, University of Padova
+    }
+    
+    
     campus_selection = st.selectbox("Select your campus", list(campuses.keys()))
 
     if st.button('Find Bars'):
