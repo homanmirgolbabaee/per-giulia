@@ -47,10 +47,16 @@ def fetch_bars_near_campus(campus_location):
     # For example: campus_location = {'lat': 45.406435, 'lng': 11.876761} # Example coordinates
     
     # Making a request to find bars near the campus location
-    places_result = gmaps.places_nearby(location=campus_location, radius=500, type='bar')
-    
+    #places_result = gmaps.places_nearby(location=campus_location, radius=500, type='bar')
+    places_result = gmaps.places_nearby(location=campus_location, radius=500, type='bar', keyword='bar')
     bars = []
     for place in places_result.get('results', []):
+        # Initialize photo_reference as None
+        photo_reference = None
+        # Check if 'photos' field is present and has at least one photo
+        if 'photos' in place and len(place['photos']) > 0:
+            photo_reference = place['photos'][0]['photo_reference']
+
         bars.append({
             'name': place.get('name'),
             'address': place.get('vicinity'),
@@ -66,8 +72,8 @@ def show_bar_finder():
     st.write("Detailed information and functionality for finding gluten-free bars.")
     
     campuses = {
-        'Campus A': {'lat': 45.411889, 'lng': 11.887048}, # DEI Department, University of Padova
-        'Campus B': {'lat': 45.421500, 'lng': 11.886111}, # Psychology Department, University of Padova
+        'DEI Campus': {'lat': 45.411889, 'lng': 11.887048}, # DEI Department, University of Padova
+        'Pyschology Department': {'lat': 45.421500, 'lng': 11.886111}, # Psychology Department, University of Padova
     }
     
     
@@ -78,11 +84,26 @@ def show_bar_finder():
         bars = fetch_bars_near_campus(campus_location)
         if bars:
             for bar in bars:
-                st.markdown(f"**{bar['name']}**")
-                st.write(f"Address: {bar['address']}")
-                st.write(f"Rating: {bar['rating']}")
+                # Use columns to create a more structured layout
+                col1, col2 = st.columns([1, 4])
+                with col1:
+                    # Use the photo reference to fetch and display the image
+                    if bar.get('photo_reference'):
+                        photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photoreference={bar['photo_reference']}&key={st.secrets['google_maps_key']}"
+                        st.image(photo_url, caption="Bar Image")
+                    else:
+                        # Display a placeholder if no photo is available
+                        st.image("https://via.placeholder.com/100", caption="No Image Available")            
+                        
+                with col2:
+                    st.markdown(f"#### {bar['name']}")
+                    st.write(f"**Address:** {bar['address']}")
+                    st.write(f"**Rating:** {bar['rating']}/5")
+                    # Example of how you might add a link for directions
+                    # You would need to construct the URL using the bar's actual coordinates or address
+                    st.markdown(f"[Get Directions](https://www.google.com/maps/dir/?api=1&destination={bar['address'].replace(' ', '+')})")
         else:
-            st.write("No bars found near this campus.")
+            st.warning("No bars found near this campus. Try another campus or widen your search criteria.")
 
 
 
