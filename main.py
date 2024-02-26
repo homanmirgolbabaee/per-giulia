@@ -140,7 +140,51 @@ def show_news_and_tips():
 
 def show_study_group_finder():
     st.header("Study Group Finder")
-    st.write("Functionality to find or create study groups.")
+    st.subheader("Find or create study groups to enhance your learning experience.")
+
+    # Input for specifying study interests
+    interests = st.multiselect(
+        "Select your study interests",
+        ["Mathematics", "Science", "Engineering", "Programming", "Humanities", "Languages", "Other"],
+        help="Select one or more areas you're interested in studying."
+    )
+
+    # Input for preferred study times
+    study_times = st.multiselect(
+        "Preferred study times",
+        ["Morning", "Afternoon", "Evening", "No Preference"],
+        help="Select one or more preferred study times."
+    )
+
+    # Input for preferred mode of communication
+    communication_mode = st.selectbox(
+        "Preferred mode of communication",
+        ["Online (Zoom, Discord, etc.)", "In-person", "Either"],
+        help="Choose your preferred mode of communication for study groups."
+    )
+
+    # Button to find study groups
+    if st.button("Find Study Groups"):
+        # Placeholder for search functionality
+        st.write("Searching for study groups matching your criteria...")
+        # Here, you would typically query a database or other data source to find matching groups.
+        # For demonstration purposes, we'll just show a placeholder message.
+        st.info("Feature to display matching study groups is under development.")
+
+    st.markdown("---")
+
+    # Section to create a new study group
+    st.subheader("Create a New Study Group")
+    group_name = st.text_input("Study Group Name", help="Give your study group a name.")
+    group_description = st.text_area("Group Description", help="Describe what your study group will focus on.")
+
+    # Button to create a new study group
+    if st.button("Create Study Group"):
+        # Placeholder for group creation functionality
+        st.success(f"Study Group '{group_name}' created successfully!")
+        # Here, you would typically save the new group details to a database or other data source.
+        # Display a success message for now.
+        # In a real application, implement the logic to save the group information.
 
 def show_course_recommendation():
     st.header("Course Recommendation System")
