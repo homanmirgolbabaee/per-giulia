@@ -1,4 +1,3 @@
-# Homan Mirgolbabae   
 import streamlit as st
 
 # Placeholder for authentication function
@@ -75,6 +74,7 @@ def show_bar_finder():
     campuses = {
         'DEI Campus': {'lat': 45.411889, 'lng': 11.887048}, # DEI Department, University of Padova
         'Pyschology Department': {'lat': 45.421500, 'lng': 11.886111}, # Psychology Department, University of Padova
+        'Agripolis Campus': {'lat': 45.346337983376486, 'lng': 11.956815361663871} # Agripolis Campus, University of Padova
     }
     
     
@@ -111,7 +111,28 @@ def show_bar_finder():
 
 def show_events_and_dei():
     st.header("Events & DEI Flyers")
-    st.write("Detailed information on events and Diversity, Equity, and Inclusion (DEI) flyers.")
+    st.write("Explore our latest events and Diversity, Equity, and Inclusion (DEI) initiatives through these flyers. Click on any image for more details.")
+
+    # Assuming your images are named appropriately within the ./images/sources/ directory
+    image_paths = [
+        "sources/images/1.jpg",
+        "sources/images/2.jpg",
+        "sources/images/3.jpg",
+        "sources/images/4.jpg"
+    ]
+    
+    # Create a grid layout for the images - adjust the number of columns as per your UI design
+    cols = st.columns(2) # This creates a 2-column layout; change the number inside columns() for a different layout
+    
+    for index, image_path in enumerate(image_paths):
+        with cols[index % 2]: # This ensures distribution across the columns
+            image = st.image(image_path, use_column_width=True) # Adjust use_column_width as needed
+            # Optional: Add a caption or a button for more details under each image
+            st.write("Event/DEI Initiative #{}".format(index + 1))
+            # Example of adding a button that could, in future, link to more details
+            if st.button('More Info', key=f'more_info_{index}'):
+                st.write(f"You clicked for more information on item #{index + 1}.") # Placeholder for more info logic
+
 
 def show_news_and_tips():
     st.header("News & Tips")
