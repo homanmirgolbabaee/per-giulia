@@ -136,7 +136,50 @@ def show_events_and_dei():
 
 def show_news_and_tips():
     st.header("News & Tips")
-    st.write("Latest news and tips for students.")
+    st.subheader("Stay updated with the latest from Computer Engineering DEI")
+
+    # Example of static news items - these could be fetched from a live database or API
+    news_items = [
+        {
+            "title": "Diversity in Tech: Bridging the Gap",
+            "date": "2024-02-25",
+            "description": "A look into how the University of Padova is leading initiatives to bridge the diversity gap in tech.",
+            "link": "https://www.example.com/news/1"
+        },
+        {
+            "title": "Inclusive AI: Workshop Series",
+            "date": "2024-03-05",
+            "description": "Join our workshop series on developing inclusive AI technologies, hosted by the DEI department.",
+            "link": "https://www.example.com/news/2"
+        },
+        {
+            "title": "Tips for Aspiring Engineers",
+            "date": "2024-03-10",
+            "description": "Top tips and resources for students pursuing a career in computer engineering.",
+            "link": "https://www.example.com/news/3"
+        }
+    ]
+
+    # Display each news item using a card-like format
+    for item in news_items:
+        with st.container():
+            st.markdown(f"### [{item['title']}]({item['link']})")
+            st.caption(item['date'])
+            st.write(item['description'])
+            st.markdown(f"[Read more]({item['link']})")
+
+    st.markdown("---")
+
+    # Additional section for tips or resources
+    st.subheader("Useful Resources")
+    st.write("Explore a curated list of resources to aid your learning and development:")
+    resources = [
+        "[Learn Python for Data Science](https://www.example.com/resources/python)",
+        "[Understanding Machine Learning Algorithms](https://www.example.com/resources/ml)",
+        "[Career Paths in Computer Engineering](https://www.example.com/resources/careers)"
+    ]
+    for resource in resources:
+        st.markdown(f"- {resource}")
 
 def show_study_group_finder():
     st.header("Study Group Finder")
@@ -188,7 +231,48 @@ def show_study_group_finder():
 
 def show_course_recommendation():
     st.header("Course Recommendation System")
-    st.write("System to recommend courses based on student preferences and history.")
+    st.subheader("Find courses tailored to your interests, goals, and academic history.")
+
+    # Input for specifying academic interests
+    academic_interests = st.multiselect(
+        "Select your academic interests",
+        ["Computer Science", "Data Science", "Business", "Engineering", "Arts & Humanities", "Science", "Other"],
+        help="Select one or more academic areas you're interested in."
+    )
+
+    # Input for specifying learning goals
+    learning_goals = st.multiselect(
+        "What are your learning goals?",
+        ["Gain new skills", "Prepare for a career", "Explore new subjects", "Academic requirement", "Other"],
+        help="Select one or more goals for your learning journey."
+    )
+
+    # Input for preferred course difficulty
+    difficulty_level = st.selectbox(
+        "Preferred difficulty level",
+        ["Beginner", "Intermediate", "Advanced"],
+        help="Choose the difficulty level suitable for your current knowledge and skills."
+    )
+
+    # Button to get course recommendations
+    if st.button("Get Recommendations"):
+        # Placeholder for recommendation functionality
+        st.write("Generating personalized course recommendations...")
+        # Here, you would typically query a recommendation engine or database to find courses that match the criteria.
+        # For demonstration purposes, we'll just show a placeholder message.
+        st.info("Feature to display personalized course recommendations is under development.")
+
+    st.markdown("---")
+
+    # Section to rate or provide feedback on recommendations (for future improvement)
+    st.subheader("Rate or Provide Feedback on Recommendations")
+    feedback_text = st.text_area("Feedback", help="Your feedback helps us improve future recommendations.")
+    
+    # Button to submit feedback
+    if st.button("Submit Feedback"):
+        # Placeholder for feedback submission functionality
+        st.success("Thank you for your feedback!")
+        # In a real application, you would store this feedback for analysis and improvement of the recommendation algorithm.
 
 # Main app logic
 if not st.session_state['authenticated']:
